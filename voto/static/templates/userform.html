@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastre-se</title>
+</head>
+<body>
+    <h1>Cadastre-se</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <div>
+                    <span class="text-danger small">{{ field.errors }}</span>
+                </div>
+                <label class="control-label col-sm-2">{{ field.label_tag }}</label>
+                <div>{{ field }}</div>
+            </div>
+        {% endfor %}
+        <button type="submit"> Cadastrar
+    </form>
+</body>
+</html>

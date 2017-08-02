@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sua página</title>
+</head>
+<body>
+    <h1>Criar Poll</h1>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+            <div>
+                <label>{{ form.poll.label_tag }}</label>
+                <div>{{ form.poll}}</div>
+                <div>{{ form.created_by.as_hidden}}</div>
+            </div>
+        <br>
+        <button type="submit"> Criar Votação </button>
+    </form>
+</body>
+</html>

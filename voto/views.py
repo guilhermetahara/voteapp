@@ -51,18 +51,19 @@ def userlogout(request):
         return redirect('/')
 
 def userindex(request):
-
+    user = request.user.username
 
     if request.method == 'GET':
-        form = models.pollForm
-        if request.user.is_authenticated() and '/usuario/' + request.user.username + '/' == request.path:
+        form = models.pollForm(initial={'created_by': user})
+        if request.user.is_authenticated() and '/usuario/' + user + '/' == request.path:
             return render(request, 'userindex.html', {'form': form})
         else:
             return redirect('/')
 
     if request.method == 'POST':
+
         if request.user.is_authenticated():
-            form = models.pollForm(request.POST, initial={'created_by': request.user.username})
+            form = models.pollForm(request.POST)
             if form.is_valid():
                 form.save()
                 return render(request, 'polls.html')

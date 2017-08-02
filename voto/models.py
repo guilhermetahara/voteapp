@@ -42,7 +42,7 @@ class LoginForm(forms.Form):
 class poll(models.Model):
     poll_id = models.AutoField(primary_key=True)
     poll = models.CharField(max_length=400)
-    created_by = models.CharField(max_length=400, default='')
+    created_by = models.CharField(max_length=400)
 
     def __str__(self):
         return self.poll
