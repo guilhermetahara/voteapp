@@ -1,4 +1,7 @@
 from django.contrib import admin
-from .models import poll
+from . import models
 
-admin.site.register(poll)
+admin.site.register(models.Votacao)
+admin.site.register(models.Escolha)
+admin.site.register(models.Voto)
+

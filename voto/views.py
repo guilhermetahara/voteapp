@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from . import models
-from django.contrib.auth.models import User
-from django import forms
+from django.forms.formsets import formset_factory
+from django.views import View
 
 
 def createuser(request):
@@ -50,24 +50,13 @@ def userlogout(request):
         logout(request)
         return redirect('/')
 
-def userindex(request):
-    user = request.user.username
+class Userindex(View):
 
-    if request.method == 'GET':
-        form = models.pollForm(initial={'created_by': user})
-        if request.user.is_authenticated() and '/usuario/' + user + '/' == request.path:
-            return render(request, 'userindex.html', {'form': form})
-        else:
-            return redirect('/')
+    def get(self, request):
+        return render(request, 'userindex.html', )
 
-    if request.method == 'POST':
 
-        if request.user.is_authenticated():
-            form = models.pollForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return render(request, 'polls.html')
-            else:
-                return render(request, 'userindex.html', {'form': form})
-        else:
-            return render(request, 'home.html')
+class Poll(View):
+
+    def get(self, request):
+        retur

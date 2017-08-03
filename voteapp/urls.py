@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^usuario/cad$', views.createuser, name='createuser'),
     url(r'^login/$', views.userlogin, name='login'),
     url(r'^logout/$', views.userlogout, name='logout'),
-    url(r'^usuario/.*/', views.userindex, name='userindex'),
+    url(r'^usuario/.*/', views.Userindex.as_view(), name='userindex'),
 
 ]

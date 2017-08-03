@@ -2,13 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Poll</title>
+    <title>Sua página</title>
 </head>
 <body>
-    <h1>Texto da votação</h1>
-
-    <h2>Opções</h2>
-
-    <h2>resultados</h2>
+    {% load static  %}
+    <h1>Criar Poll</h1>
+    <br>
+    <form method="post">
+        {{ itemformset.management_form }}
+        {% csrf_token %}
+            <div>
+                <label>{{ pollform.poll.label_tag }}</label>
+                <div>{{ pollform.poll}}</div>
+                <div>{{ pollform.created_by.as_hidden}}</div>
+            </div>
+    {% for itemform in itemformset %}
+    <div class="item-formset">
+        {{ itemform.item.label_tag }}
+        {{ itemform.item }}
+        {{ itemform.poll.as_hidden}}
+    </div>
+    {% endfor %}
+        <br>
+        <button type="submit"> Criar Votação </button>
+    </form>
 </body>
 </html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+<script>
+    $('.item-formset').formset({
+        addText: 'add item',
+        deleteText: 'remove'
+    });
+</script>

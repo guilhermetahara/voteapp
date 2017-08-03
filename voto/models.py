@@ -39,16 +39,39 @@ class LoginForm(forms.Form):
         cleaned_data = super(LoginForm, self).clean()
         return cleaned_data
 
-class poll(models.Model):
-    poll_id = models.AutoField(primary_key=True)
-    poll = models.CharField(max_length=400)
-    created_by = models.CharField(max_length=400)
+class Votacao(models.Model):
+    pergunta = models.CharField(max_length=1000)
+    autor = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def contagem_escolhas(self):
+        return self.escolha_set.count()
+
+    def total_votos(self):
+        total = 0
+
+        for escolha in self.escolha_set.all():
+            total = total + escolha.contagem_voto()
+        return total
+
 
     def __str__(self):
-        return self.poll
+        return self.pergunta
 
-class pollForm(forms.ModelForm):
-    class Meta:
-        model = poll
-        fields = ['poll', 'created_by']
-        widgets = {'author': forms.HiddenInput()}
+
+class Escolha(models.Model):
+    escolha = models.CharField(max_length=500)
+    votacao = models.ForeignKey(Votacao)
+
+    def contagem_voto(self):
+        return self.voto_set.count()
+
+    def __str__(self):
+        return self.escolha
+
+class Voto(models.Model):
+
+    escolha = models.ForeignKey(Escolha)
+    votacao = models.ForeignKey(Votacao)
+
+    def __unicode__(self):
+        return u'Voto em %s' % (self.choice)

@@ -5,17 +5,8 @@
     <title>Sua página</title>
 </head>
 <body>
-    <h1>Criar Poll</h1>
-    <br>
-    <form method="post">
-        {% csrf_token %}
-            <div>
-                <label>{{ form.poll.label_tag }}</label>
-                <div>{{ form.poll}}</div>
-                <div>{{ form.created_by.as_hidden}}</div>
-            </div>
-        <br>
-        <button type="submit"> Criar Votação </button>
-    </form>
+    <h1>Criar nova votação</h1>
+    <h1>Suas votações</h1>
+    <h1>Suas informações</h1>
 </body>
 </html>
