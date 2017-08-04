@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from . import models
 from django.forms.formsets import formset_factory
 from django.views import View
+from django.views.generic.edit import FormView
 
 
 def createuser(request):
@@ -52,11 +53,52 @@ def userlogout(request):
 
 class Userindex(View):
 
-    def get(self, request):
-        return render(request, 'userindex.html', )
+    form_class = models.VotacaoForm
+    formset_class = formset_factory(models.EscolhaForm)
+
+    def get(self, request, username):
+        form = self.form_class(None)
+        formset = self.formset_class(None)
+        return render(request, 'userindex.html', {'form': form, 'formset': formset})
+
+    def post(self, request, username):
+
+        votacao_obj = request.POST['pergunta']
+        usuario = request.user
+
+        #cria entrada da votação no banco de dados
+        models.Votacao.objects.create(pergunta=votacao_obj, autor=usuario)
+
+        #Procura pela votação criada
+        #Conta quantas escolhas foram criadas pelo POST e cria entradas no banco de dados
+        ultima_votação = models.Votacao.objects.latest('id')
+        num_escolhas = 0
+        totalforms = 'form-TOTAL_FORMS'
+        for totalforms in request.POST:
+            num_escolhas = num_escolhas + 1
+        num_escolhas = (num_escolhas-1)/2
+        for i in range(0, int(num_escolhas)-1):
+            escolha_obj = request.POST['form-' + str(i) + '-escolha']
+            models.Escolha.objects.create(votacao=ultima_votação, escolha=escolha_obj)
+        return redirect('/usuario/' + str(request.user.username) + '/votacao/' + str(votacao_obj) + '/')
 
 
-class Poll(View):
+class Votacao(View):
 
-    def get(self, request):
-        retur
+    def get(self, request, username):
+        url = str(request.path)
+        pergunta = url.rsplit('/', 2)[1]
+        username = url.rsplit('/', 4)[1]
+        user = models.User.objects.filter(username=username)
+        votacao = models.Votacao.objects.filter(autor=user, pergunta=pergunta)
+        escolhas = models.Escolha.objects.filter(votacao=votacao)
+        data_dic = {}
+        lista_escolhas = []
+
+        for v in votacao:
+            data_dic['pergunta'] = (v.pergunta)
+        for e in escolhas:
+            lista_escolhas.append(e.escolha)
+        data_dic['lista_escolhas'] = lista_escolhas
+        return render(request, 'Votacao.html', data_dic)
+

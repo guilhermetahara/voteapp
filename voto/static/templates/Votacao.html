@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ pergunta }}</title>
+</head>
+<body>
+    <h1>{{ pergunta }}</h1>
+    <br>
+    {% for lista_escolhas in lista_escolhas %}
+    <form action="">
+        <input type="radio" name="gender" value="voto">{{ lista_escolhas }}<br>
+    </form>
+    <br>
+    {% endfor %}
+</body>
+</html>

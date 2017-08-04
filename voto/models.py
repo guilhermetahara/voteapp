@@ -57,6 +57,10 @@ class Votacao(models.Model):
     def __str__(self):
         return self.pergunta
 
+class VotacaoForm(forms.ModelForm):
+    class Meta:
+        model = Votacao
+        fields = ['pergunta']
 
 class Escolha(models.Model):
     escolha = models.CharField(max_length=500)
@@ -67,6 +71,11 @@ class Escolha(models.Model):
 
     def __str__(self):
         return self.escolha
+
+class EscolhaForm(forms.ModelForm):
+    class Meta:
+        model = Escolha
+        fields = ['escolha']
 
 class Voto(models.Model):
 

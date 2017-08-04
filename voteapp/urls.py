@@ -20,10 +20,23 @@ from voto import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
+    #localhost:8000/
     url(r'^$', views.home, name='home'),
+
+    #localhost:8000/usuario/cad
     url(r'^usuario/cad$', views.createuser, name='createuser'),
+
+    #localhost:8000/login
     url(r'^login/$', views.userlogin, name='login'),
+
+    ##localhost:8000/logout
     url(r'^logout/$', views.userlogout, name='logout'),
-    url(r'^usuario/.*/', views.Userindex.as_view(), name='userindex'),
+
+    #localhost:8000/usuario/<username>/
+    url(r'^usuario/(?P<username>[\w.@+-]+)/$', views.Userindex.as_view(), name='userindex'),
+
+    #localhost:8000/usuario/<username>/votacao/<pergunta>
+    url(r'^usuario/(?P<username>[\w.@+-]+)/votacao/.*$', views.Votacao.as_view(), name='votacao'),
 
 ]

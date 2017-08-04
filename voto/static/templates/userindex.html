@@ -5,8 +5,26 @@
     <title>Sua página</title>
 </head>
 <body>
+    {% load static  %}
     <h1>Criar nova votação</h1>
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <div class="escolha-formset">
+        {{ formset }}
+    </div>
+    <button type="submit"> Criar</button>
+    <br>
     <h1>Suas votações</h1>
     <h1>Suas informações</h1>
 </body>
 </html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+<script>
+    $('.escolha-formset').formset({
+        addText: 'add item',
+        deleteText: 'remove'
+    });
+</script>
