@@ -88,7 +88,6 @@ class Votacao(View):
     def get(self, request, username):
         url = str(request.path)
         pergunta = url.rsplit('/', 2)[1]
-        username = url.rsplit('/', 4)[1]
         user = models.User.objects.filter(username=username)
         votacao = models.Votacao.objects.filter(autor=user, pergunta=pergunta)
         escolhas = models.Escolha.objects.filter(votacao=votacao)
@@ -98,7 +97,19 @@ class Votacao(View):
         for v in votacao:
             data_dic['pergunta'] = (v.pergunta)
         for e in escolhas:
-            lista_escolhas.append(e.escolha)
+           lista_escolhas.append(e)
+        print(lista_escolhas)
         data_dic['lista_escolhas'] = lista_escolhas
         return render(request, 'Votacao.html', data_dic)
 
+    def post(self, request, username):
+        print(request.POST['escolha_id'])
+        url = str(request.path)
+        pergunta = url.rsplit('/', 2)[1]
+        autor = models.User.objects.get(username=username)
+        votacao = models.Votacao.objects.get(pergunta=pergunta, autor=autor)
+        id = request.POST['escolha_id']
+        print(id)
+        escolha = models.Escolha.objects.get(id=id)
+        models.Voto.objects.create(votacao=votacao, escolha=escolha)
+        return redirect('/')
